@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sonam</title>
+<meta name="description" content="Portfolio of Sonam: media, research, and design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EDF1F2;
+    --wash: #DCE4E8;
+    --ink: #17202B;
+    --line: #3F5F8F;
+    --sun: #E8A317;
+    --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+    --sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+  a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--sun); text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--line); outline-offset: 3px; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ---------- Hero ---------- */
+  header.hero { padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 5vw, 4rem); }
+  .name-block { display: inline-block; max-width: 100%; }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(4.5rem, 17vw, 12rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.6rem;
+  }
+  /* Dimension line, like a measured drawing, sized to the name above it */
+  .dim {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    color: var(--line);
+    font-size: 0.9rem;
+    transform-origin: left center;
+    animation: draw 1.1s cubic-bezier(.2,.7,.2,1) 0.2s both;
+  }
+  .dim::before, .dim::after {
+    content: "";
+    flex: 1;
+    height: 12px;
+    background:
+      linear-gradient(currentColor, currentColor) 0 50% / 100% 1px no-repeat,
+      linear-gradient(currentColor, currentColor) var(--tick) 50% / 1px 100% no-repeat;
+  }
+  .dim::before { --tick: 0; }
+  .dim::after  { --tick: 100%; }
+  @keyframes draw { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+
+  .intro { max-width: 34rem; margin: 2.2rem 0 0; font-size: 1.25rem; line-height: 1.5; }
+
+  /* ---------- Filters ---------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; padding: 1rem 0 0; border-top: 1px solid var(--line); }
+  .filters button {
+    font: inherit;
+    font-weight: 500;
+    background: none;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    padding: 0.4rem 0 0.35rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .filters button:hover { border-bottom-color: var(--wash); }
+  .filters button[aria-pressed="true"] { border-bottom-color: var(--sun); }
+
+  /* ---------- Project grid ---------- */
+  main { padding-bottom: 4rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.75rem 1.5rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+    align-items: start;
+  }
+  .card { border: 1px solid var(--line); background: var(--paper); }
+  .card[hidden] { display: none; }
+
+  .card > button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .thumb {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-bottom: 1px solid var(--line);
+    background:
+      repeating-linear-gradient(45deg, transparent 0 9px, rgba(63,95,143,.22) 9px 10px),
+      var(--wash);
+    overflow: hidden;
+  }
+  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-text { padding: 0.9rem 1rem 1rem; }
+  .card h2 { font-family: var(--serif); font-weight: 400; font-size: 1.6rem; line-height: 1.15; margin: 0 0 0.3rem; }
+  .meta { margin: 0; font-size: 0.9rem; color: var(--line); }
+  .toggle-hint { display: block; margin-top: 0.7rem; font-size: 0.85rem; font-weight: 500; }
+  .toggle-hint::after { content: " +"; }
+  .card.open .toggle-hint::after { content: " \2212"; }
+
+  /* Expanding details */
+  .detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .card.open .detail { grid-template-rows: 1fr; }
+  .detail > div { overflow: hidden; }
+  .detail p { margin: 0; padding: 0 1rem 0.8rem; font-size: 0.98rem; }
+  .detail .tools { color: var(--line); font-size: 0.88rem; }
+  .detail a { display: inline-block; margin: 0 1rem 1rem; font-weight: 500; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 2rem 0 3rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; align-items: baseline; }
+  footer p { margin: 0; }
+  footer .links { margin-left: auto; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+  @media (max-width: 560px) {
+    footer .links { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .dim { animation: none; }
+    .detail { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="name-block">
+      <h1>Sonam</h1>
+      <!-- Dimension line: change the text to whatever you want measured under your name -->
+      <div class="dim"><span>BA Architecture and Chinese Studies, Middlebury College</span></div>
+    </div>
+
+    <!-- DRAFT: rewrite this in your own voice -->
+    <p class="intro">
+      I tell stories the way I was trained to design buildings: start with the structure, then think about how people move through it. I work across media, research, and design.
+    </p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="media" aria-pressed="false">Media</button>
+      <button type="button" data-filter="research" aria-pressed="false">Research</button>
+      <button type="button" data-filter="design" aria-pressed="false">Design</button>
+    </div>
+
+    <!--
+      HOW TO EDIT A PROJECT
+      1. Put an image in an "images" folder next to this file (e.g. images/sunshine.jpg).
+      2. Change the <img src> below to match. Until the image exists, the striped placeholder shows.
+      3. Change the title, meta line, description, tools, and link.
+      To add a project, copy a whole <li class="card"> block. data-section must be media, research, or design.
+    -->
+    <ul class="grid">
+
+      <li class="card" data-section="media">
+        <button type="button" aria-expanded="false">
+          <div class="thumb"><img src="images/share-sunshine-studio.jpg" alt="" onerror="this.remove()"></div>
+          <div class="card-text">
+            <h2>Share Sunshine Studio</h2>
+            <p class="meta">Founder, independent cultural media brand</p>
+            <span class="toggle-hint">Details</span>
+          </div>
+        </button>
+        <div class="detail"><div>
+          <p>[Two or three sentences: what the studio makes, who it's for, and what you did.]</p>
+          <p class="tools">[Tools or formats: e.g. photography, editing, layout]</p>
+          <a href="#">View project</a>
+        </div></div>
+      </li>
+
+      <li class="card" data-section="media">
+        <button type="button" aria-expanded="false">
+          <div class="thumb"><img src="images/wrmc-radio.jpg" alt="" onerror="this.remove()"></div>
+          <div class="card-text">
+            <h2>Live Mandarin radio show</h2>
+            <p class="meta">Host, WRMC</p>
+            <span class="toggle-hint">Details</span>
+          </div>
+        </button>
+        <div class="detail"><div>
+          <p>[What the show covered, how often it aired, and who listened.]</p>
+          <p class="tools">[Tools or formats: e.g. live broadcast, audio editing]</p>
+          <a href="#">Listen</a>
+        </div></div>
+      </li>
+
+      <li class="card" data-section="research">
+        <button type="button" aria-expanded="false">
+          <div class="thumb"><img src="images/fulcrum.jpg" alt="" onerror="this.remove()"></div>
+          <div class="card-text">
+            <h2>Primary research</h2>
+            <p class="meta">Fulcrum Consulting Group</p>
+            <span class="toggle-hint">Details</span>
+          </div>
+        </button>
+        <div class="detail"><div>
+          <p>[The question you researched, your method, and what the work fed into.]</p>
+          <p class="tools">[Methods: e.g. interviews, source analysis, memo writing]</p>
+          <a href="#">View sample</a>
+        </div></div>
+      </li>
+
+      <li class="card" data-section="research">
+        <button type="button" aria-expanded="false">
+          <div class="thumb"><img src="images/cises.jpg" alt="" onerror="this.remove()"></div>
+          <div class="card-text">
+            <h2>Digital Officer</h2>
+            <p class="meta">CISES, geopolitics think tank</p>
+            <span class="toggle-hint">Details</span>
+          </div>
+        </button>
+        <div class="detail"><div>
+          <p>[What you run or produce for CISES, and one result worth pointing to.]</p>
+          <p class="tools">[Tools: e.g. website, social, newsletters, design]</p>
+          <a href="#">View work</a>
+        </div></div>
+      </li>
+
+      <li class="card" data-section="design">
+        <button type="button" aria-expanded="false">
+          <div class="thumb"><img src="images/architecture-project.jpg" alt="" onerror="this.remove()"></div>
+          <div class="card-text">
+            <h2>[Architecture project title]</h2>
+            <p class="meta">Studio or thesis, Middlebury</p>
+            <span class="toggle-hint">Details</span>
+          </div>
+        </button>
+        <div class="detail"><div>
+          <p>[The site, the idea, and how it connects to the storytelling work.]</p>
+          <p class="tools">[Tools: e.g. Rhino, Illustrator, physical models]</p>
+          <a href="#">View project</a>
+        </div></div>
+      </li>
+
+      <li class="card" data-section="design">
+        <button type="button" aria-expanded="false">
+          <div class="thumb"><img src="images/second-design.jpg" alt="" onerror="this.remove()"></div>
+          <div class="card-text">
+            <h2>[Information design piece]</h2>
+            <p class="meta">[Where it ran or who it was for]</p>
+            <span class="toggle-hint">Details</span>
+          </div>
+        </button>
+        <div class="detail"><div>
+          <p>[What it explains and how you made the structure clear.]</p>
+          <p class="tools">[Tools]</p>
+          <a href="#">View project</a>
+        </div></div>
+      </li>
+
+    </ul>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Queens, New York</p>
+    <div class="links">
+      <a href="mailto:you@example.com">Email</a>
+      <a href="#">Resume</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Filter by section
+  const filterButtons = document.querySelectorAll('.filters button');
+  const cards = document.querySelectorAll('.card');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      filterButtons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      cards.forEach(card => {
+        card.hidden = !(f === 'all' || card.dataset.section === f);
+      });
+    });
+  });
+
+  // Expand / collapse details
+  cards.forEach(card => {
+    const trigger = card.querySelector(':scope > button');
+    trigger.addEventListener('click', () => {
+      const open = card.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', String(open));
+    });
+  });
+</script>
+</body>
+</html>
