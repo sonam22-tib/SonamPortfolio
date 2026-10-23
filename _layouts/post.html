@@ -1,0 +1,8 @@
+<link rel="stylesheet" href="/assets/style.css">
+<header class="masthead"><h1><a href="/">The Daily Story</a></h1></header>
+<article class="column">
+  <h1 class="headline">{{ page.title }}</h1>
+  <p class="sub">{{ page.subtitle }}</p>
+  <p class="by">By <b>{{ page.author }}</b> · {{ page.date | date: "%B %-d, %Y" }}</p>
+  <div class="body">{{ content }}</div>
+</article>
